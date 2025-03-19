@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата коммунальных услуг со скидкой</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 12px 20px;
+            font-size: 18px;
+            color: white;
+            background: #4CAF50;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        .discount {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .menu button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu button:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Оплата коммунальных услуг со скидкой</h1>
+
+        <!-- Меню -->
+        <div class="menu">
+            <button onclick="showSection('personal')">Личные данные</button>
+            <button onclick="showSection('meters')">Показания счетчиков</button>
+            <button onclick="showSection('payment')">Оплата</button>
+        </div>
+
+        <form id="payment-form">
+
+            <!-- Личные данные -->
+            <div id="personal" class="section">
+                <div class="form-group">
+                    <label for="name">ФИО:</label>
+                    <input type="text" id="name" placeholder="Введите ваше ФИО" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Адрес:</label>
+                    <input type="text" id="address" placeholder="Введите ваш адрес" required>
+                </div>
+                <div class="form-group">
+                    <label for="account">Лицевой счет:</label>
+                    <input type="text" id="account" placeholder="Введите номер счета" required>
+                </div>
+            </div>
+
+            <!-- Показания счетчиков -->
+            <div id="meters" class="section hidden">
+                <div class="form-group">
+                    <label for="water">Показания по воде (м³):</label>
+                    <input type="number" id="water" placeholder="Введите показания" required>
+                </div>
+                <div class="form-group">
+                    <label for="water-usage">Потрачено воды за месяц (м³):</label>
+                    <input type="number" id="water-usage" placeholder="Введите объем" required>
+                </div>
+                <div class="form-group">
+                    <label for="gas">Показания по газу (м³):</label>
+                    <input type="number" id="gas" placeholder="Введите показания" required>
+                </div>
+                <div class="form-group">
+                    <label for="electricity">Показания по электроэнергии (кВт·ч):</label>
+                    <input type="number" id="electricity" placeholder="Введите показания" required>
+                </div>
+            </div>
+
+            <!-- Оплата -->
+            <div id="payment" class="section hidden">
+                <div class="form-group">
+                    <label for="amount">Сумма к оплате (₽):</label>
+                    <input type="number" id="amount" placeholder="Рассчитывается автоматически" readonly>
+                </div>
+                <div class="discount" id="discount-info">Ваша скидка: 0 ₽</div>
+                <button type="submit" class="btn">Оплатить через Payeer</button>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        const tariffWater = 65.77; // Тариф за 1 м³ воды
+
+        // Переключение между разделами
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        const form = document.getElementById('payment-form');
+        const waterUsageInput = document.getElementById('water-usage');
+        const amountInput = document.getElementById('amount');
+        const discountInfo = document.getElementById('discount-info');
+
+        // Рассчитывает сумму и скидку
+        waterUsageInput.addEventListener('input', () => {
+            const waterUsage = parseFloat(waterUsageInput.value) || 0;
+            const totalAmount = waterUsage * tariffWater; // Считаем оплату за воду
+            const discount = totalAmount * 0.1; // 10% скидка
+            amountInput.value = (totalAmount * 0.9).toFixed(2);
+            discountInfo.textContent = `Ваша скидка: ${discount.toFixed(2)} ₽`;
+        });
+
+        // Переход на Payeer
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const account = document.getElementById('account').value;
+            const water = document.getElementById('water').value;
+            const waterUsage = waterUsageInput.value;
+            const gas = document.getElementById('gas').value;
+            const electricity = document.getElementById('electricity').value;
+            const amount = parseFloat(amountInput.value);
+
+            if (!name || !address || !account || !water || !waterUsage || !gas || !electricity || amount <= 0) {
+                alert('Пожалуйста, заполните все поля корректно.');
+                return;
+            }
+
+            const description = `Оплата ЖКУ: ${account}, Вода: ${waterUsage} м³, Газ: ${gas}, Эл.: ${electricity}`;
+
+            const payeerUrl = `https://payeer.com/merchant/?account=P1129942886&sum=${amount}&cur=RUB&desc=${encodeURIComponent(description)}`;
+            window.location.href = payeerUrl;
+        });
+    </script>
+
+</body>
+
+</html>
