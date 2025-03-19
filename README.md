@@ -1,2 +1,2 @@
-# Utilities_For_Sale
-On this site you can pay for utilitu services with a 10% discount
+# Payments
+Here you can pay with a 10% discount
