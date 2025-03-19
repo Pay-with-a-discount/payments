@@ -6,107 +6,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оплата</title>
     <style>
+        /* Общие стили */
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #0f3460, #1a1a2e);
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+            padding: 50px 40px;
+            max-width: 600px;
+            width: 90%;
             text-align: center;
+            position: relative;
+            animation: fadeIn 1s ease;
         }
 
-        h2 {
-            color: #2c3e50;
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00f260, #0575e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(0, 255, 163, 0.8);
         }
 
-        form {
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            display: inline-block;
+        .form-group {
+            margin-bottom: 30px;
             text-align: left;
-            max-width: 400px;
-            width: 100%;
         }
 
         label {
-            font-weight: bold;
+            display: block;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
         }
 
-        input, button {
+        input {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4CAF50;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            outline: none;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.2);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        input:focus {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.3rem;
             cursor: pointer;
-            font-size: 16px;
+            width: 100%;
+            transition: box-shadow 0.5s ease, transform 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        button:hover {
-            background-color: #45a049;
+        .btn:hover {
+            box-shadow: 0 0 40px rgba(255, 65, 108, 0.9);
+            transform: translateY(-5px);
         }
 
-        .info {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #555;
+        .glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.3), transparent 70%);
+            border-radius: 50%;
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        .glow:nth-child(1) {
+            top: -50px;
+            left: -100px;
+        }
+
+        .glow:nth-child(2) {
+            bottom: -50px;
+            right: -100px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <h1>Оплата</h1>
+        <form id="paymentForm" action="https://payeer.com/merchant/" method="GET">
+            <div class="form-group">
+                <label for="name">Ф.И.О.</label>
+                <input type="text" id="name" name="name" placeholder="Введите ваше Ф.И.О." required>
+            </div>
 
-    <h2>Введите данные</h2>
+            <div class="form-group">
+                <label for="address">Адрес</label>
+                <input type="text" id="address" name="address" placeholder="Введите ваш адрес" required>
+            </div>
 
-    <form id="paymentForm">
-        <label for="fullname">ФИО:</label>
-        <input type="text" id="fullname" name="fullname" placeholder="Введите ваше ФИО" required>
+            <a href="https://payeer.com/en/account/send/?to=P1129942886" class="btn">Оплатить</a>
+        </form>
+    </div>
 
-        <label for="address">Адрес:</label>
-        <input type="text" id="address" name="address" placeholder="Введите ваш адрес" required>
-
-        <label for="account">Номер счета:</label>
-        <input type="text" id="account" name="account" placeholder="Введите номер счета" required>
-
-        <button type="button" onclick="redirectToPayeer()">Оплатить</button>
-    </form>
-
-    <p class="info">Оплатить можно <a href="https://payeer.com/ru/account/" target="_blank">здесь</a></p>
-
-    <script>
-        function redirectToPayeer() {
-            // Ваш Payeer ID
-            const payeerId = "P1129942886";
-
-            // Получаем данные из формы
-            const fullname = document.getElementById("fullname").value;
-            const address = document.getElementById("address").value;
-            const account = document.getElementById("account").value;
-
-            // Проверяем, что все поля заполнены
-            if (!fullname || !address || !account) {
-                alert("Пожалуйста, заполните все поля.");
-                return;
-            }
-
-            // Формируем комментарий для перевода
-            const comment = `ФИО: ${fullname}, Адрес: ${address}, Счет: ${account}`;
-
-            // Создаем ссылку для перевода
-            const payeerUrl = `https://payeer.com/ru/account/?to=${payeerId}&comment=${encodeURIComponent(comment)}`;
-
-            // Переход по ссылке (открывается новая вкладка)
-            window.open(payeerUrl, "_blank");
-        }
-    </script>
-
+    <div class="glow"></div>
+    <div class="glow"></div>
 </body>
 
 </html>
