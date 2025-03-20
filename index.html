@@ -123,6 +123,21 @@
                 font-size: 18px;
             }
         }
+
+        .copy-btn {
+            margin-top: 10px;
+            cursor: pointer;
+            background: #0066cc;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #004aad;
+        }
     </style>
 </head>
 
@@ -140,9 +155,25 @@
                 <input type="text" id="address" name="address" placeholder="Введите ваш адрес" required>
             </div>
 
+            <div class="form-group">
+                <label for="recipient">Получатель (Payeer ID)</label>
+                <input type="text" id="recipient" value="P1129942886" readonly>
+                <button type="button" class="copy-btn" onclick="copyRecipient()">Скопировать</button>
+            </div>
+
             <a href="https://payeer.com/en/account/send/?to=P1129942886" class="btn">Оплатить</a>
         </form>
     </div>
+
+    <script>
+        // Функция для копирования Payeer ID
+        function copyRecipient() {
+            const recipientInput = document.getElementById("recipient");
+            navigator.clipboard.writeText(recipientInput.value).then(() => {
+                alert("Payeer ID скопирован: " + recipientInput.value);
+            });
+        }
+    </script>
 </body>
 
 </html>
